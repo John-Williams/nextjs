@@ -1,7 +1,13 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import { useUser } from '@auth0/nextjs-auth0';
 
 export default function Home() {
+  const { user, error, isLoading } = useUser();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
+
   return (
     <div className={styles.container}>
       <Head>
@@ -10,6 +16,9 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+
+        {user ? <div>Welcome {user.name}! <a href="/api/auth/logout">Logout</a></div> : <a href="/api/auth/login">Login</a>}
+
         <h1 className={styles.title}>
           Hi there, and welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
