@@ -17,15 +17,16 @@ export default function Home() {
 
       <main className={styles.main}>
 
+
         {user ? <div>Welcome {user.name}! <a href="/api/auth/logout">Logout</a></div> : <a href="/api/auth/login">Login</a>}
 
         <h1 className={styles.title}>
-          Hi there, and welcome to <a href="https://nextjs.org">Next.js!</a>
+          Idam profile site.
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
+          Try out the login button
+          
         </p>
 
         <div className={styles.grid}>
