@@ -1,12 +1,28 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import useApi from '../lib/use-api';
+
 import { useUser } from '@auth0/nextjs-auth0';
+
 
 export default function Home() {
   const { user, error, isLoading } = useUser();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
+  let userDetails = {};
+
+   if (user){
+  //   accessToken = await getAccessToken(req, res);
+    console.log(JSON.stringify(user));
+    console.log("about to hit the api, maybe");
+    const { response, error, isLoading } = useApi('/api/userprofile');
+
+    console.log(`response: ${JSON.stringify(response)}`);
+
+    userDetails = response;
+
+   }
 
   return (
     <div className={styles.container}>
@@ -25,39 +41,36 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-          Try out the login button
-          
+          login first          
         </p>
 
+        {(user && userDetails) &&
+
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+          <div className={styles.card}>
+            <label>Firstname&nbsp;
+              <input type="text" value={userDetails.firstName} />
+            </label>            
+          </div>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+          <div className={styles.card}>
+            <label>Lastname&nbsp;
+              <input type="text" value={userDetails.lastName} />
+            </label>            
+          </div>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+          <div className={styles.card}>
+            <label>Email&nbsp;
+              <input type="text" value={userDetails.emailAddress} />
+            </label>            
+          </div>
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+          <div className={styles.card}>            
+              <button>Update</button>            
+          </div>          
         </div>
+        }
+
       </main>
 
       <footer className={styles.footer}>
