@@ -8,14 +8,15 @@ import { useUser } from '@auth0/nextjs-auth0';
 export default function Home() {
   const { user, error, isLoading } = useUser();
 
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
   let userDetails = {};
 
    if (user){
-  //   accessToken = await getAccessToken(req, res);
+  
     console.log(JSON.stringify(user));
-    console.log("about to hit the api, maybe");
+    console.log("about to hit the api");
     const { response, error, isLoading } = useApi('/api/userprofile');
 
     console.log(`response: ${JSON.stringify(response)}`);
@@ -34,41 +35,42 @@ export default function Home() {
       <main className={styles.main}>
 
 
-        {user ? <div>Welcome {user.name}! <a href="/api/auth/logout">Logout</a></div> : <a href="/api/auth/login">Login</a>}
+        {(user && userDetails) ? <div>Welcome {user.name}! <a href="/api/auth/logout">Logout</a></div> : <a href="/api/auth/login">Login</a>}
 
         <h1 className={styles.title}>
           Idam profile site.
         </h1>
 
-        <p className={styles.description}>
-          login first          
-        </p>
+        {(user && userDetails) ?
 
-        {(user && userDetails) &&
+          <div className={styles.grid}>
+            <div className={styles.card}>
+              <label>Firstname&nbsp;
+                <input type="text" value={userDetails.firstName} />
+              </label>            
+            </div>
 
-        <div className={styles.grid}>
-          <div className={styles.card}>
-            <label>Firstname&nbsp;
-              <input type="text" value={userDetails.firstName} />
-            </label>            
+            <div className={styles.card}>
+              <label>Lastname&nbsp;
+                <input type="text" value={userDetails.lastName} />
+              </label>            
+            </div>
+
+            <div className={styles.card}>
+              <label>Email&nbsp;
+                <input type="text" value={userDetails.emailAddress} />
+              </label>            
+            </div>
+
+            <div className={styles.card}>            
+                <button>Update</button>            
+            </div>          
           </div>
 
-          <div className={styles.card}>
-            <label>Lastname&nbsp;
-              <input type="text" value={userDetails.lastName} />
-            </label>            
-          </div>
+         :
 
-          <div className={styles.card}>
-            <label>Email&nbsp;
-              <input type="text" value={userDetails.emailAddress} />
-            </label>            
-          </div>
+          <p className={styles.description}></p>
 
-          <div className={styles.card}>            
-              <button>Update</button>            
-          </div>          
-        </div>
         }
 
       </main>

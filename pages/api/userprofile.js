@@ -16,7 +16,6 @@ export default withApiAuthRequired(async function services(req, res) {
       }
     });
 
-    //console.log(response);  
 
     const profileDetails = await response.json();
     res.status(response.status || 200).json(profileDetails);
