@@ -2,12 +2,17 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import useApi from '../lib/use-api';
 
+import React, { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 
 
 export default function Home() {
   const { user, error, isLoading } = useUser();
+  const [count, setCount] = useState(0);
 
+  useEffect(() => {
+        console.log("use effect hit");
+  });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
@@ -22,6 +27,15 @@ export default function Home() {
     console.log(`response: ${JSON.stringify(response)}`);
 
     userDetails = response;
+
+   }
+
+   function handleUpdateclick(){
+     console.log("update click");
+
+    //  const { response, error, isLoading } = useApi('/api/userprofileupdate');
+
+    //  userDetails = response;
 
    }
 
@@ -62,8 +76,9 @@ export default function Home() {
               </label>            
             </div>
 
-            <div className={styles.card}>            
-                <button>Update</button>            
+            <div className={styles.card}>         
+                <span>Name Identifier: {userDetails.nameIdentifier}</span><br/>
+                <button onClick={() => setCount()}>Update</button>            
             </div>          
           </div>
 
@@ -82,7 +97,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
+          Amplify
         </a>
       </footer>
     </div>
